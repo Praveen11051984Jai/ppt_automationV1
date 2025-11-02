@@ -1,0 +1,794 @@
+"""
+PowerPoint Automation Tool - Demo Presentation & README Generator
+This script creates a demo PowerPoint presentation and README.md file
+"""
+
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
+from pptx.dml.color import RGBColor
+from datetime import datetime
+from pathlib import Path
+
+def create_demo_presentation():
+    """Create a comprehensive demo presentation"""
+    prs = Presentation()
+    prs.slide_width = Inches(10)
+    prs.slide_height = Inches(7.5)
+    
+    # Slide 1: Title Slide
+    slide1 = prs.slides.add_slide(prs.slide_layouts[0])
+    title = slide1.shapes.title
+    subtitle = slide1.placeholders[1]
+    
+    title.text = "PowerPoint Automation Tool"
+    subtitle.text = "Streamline Your Presentation Creation Process\n\nPython-Based GUI Application\n" + datetime.now().strftime('%B %Y')
+    
+    # Set background color
+    background = slide1.background
+    fill = background.fill
+    fill.solid()
+    fill.fore_color.rgb = RGBColor(240, 248, 255)  # Alice Blue
+    
+    # Slide 2: Overview
+    slide2 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide2.shapes.title.text = "What is PowerPoint Automation Tool?"
+    
+    content = slide2.placeholders[1].text_frame
+    content.text = "A powerful Python application designed to automate PowerPoint presentation creation"
+    
+    points = [
+        "User-friendly GUI interface built with Tkinter",
+        "Import and combine slides from multiple presentations",
+        "Search and extract content from documents (PDF, Word, Excel)",
+        "Automatically generate customized presentations",
+        "Add images, charts, and formatted content dynamically",
+        "Maintain original slide formatting and layouts"
+    ]
+    
+    for point in points:
+        p = content.add_paragraph()
+        p.text = point
+        p.level = 0
+        p.font.size = Pt(18)
+    
+    set_slide_background(slide2, RGBColor(240, 248, 255))
+    
+    # Slide 3: Key Features
+    slide3 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide3.shapes.title.text = "Key Features"
+    
+    content = slide3.placeholders[1].text_frame
+    content.clear()
+    
+    features = [
+        ("Customizable Title & End Slides", [
+            "Add company and customer logos",
+            "Personalize with author name and date",
+            "Choose custom background colors",
+            "Multiple ending slide templates"
+        ]),
+        ("Smart Content Selection", [
+            "Scan multiple source presentations",
+            "Preview all available slides",
+            "Select specific slides to include",
+            "Preserve original formatting"
+        ]),
+        ("Document Intelligence", [
+            "Search text in PDF, Word, Excel files",
+            "Find and insert relevant images",
+            "Extract data for chart generation",
+            "Context-aware content extraction"
+        ])
+    ]
+    
+    for feature, details in features:
+        p = content.add_paragraph()
+        p.text = feature
+        p.level = 0
+        p.font.bold = True
+        p.font.size = Pt(20)
+        p.font.color.rgb = RGBColor(0, 51, 102)
+        
+        for detail in details:
+            p = content.add_paragraph()
+            p.text = detail
+            p.level = 1
+            p.font.size = Pt(16)
+    
+    set_slide_background(slide3, RGBColor(240, 248, 255))
+    
+    # Slide 4: Step 1 - Configuration
+    slide4 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide4.shapes.title.text = "Step 1: Title & Ending Slide Configuration"
+    
+    content = slide4.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Configure Your Presentation Identity"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    steps = [
+        "Enter presentation title and author name",
+        "Upload company logo (displayed on left)",
+        "Upload customer logo (displayed on right)",
+        "Select background color for all slides",
+        "Choose ending slide type:",
+        "  • Thank You",
+        "  • Questions?",
+        "  • Contact Us",
+        "  • Custom Message"
+    ]
+    
+    for step in steps:
+        p = content.add_paragraph()
+        p.text = step
+        p.level = 0
+        p.font.size = Pt(18)
+    
+    set_slide_background(slide4, RGBColor(240, 248, 255))
+    
+    # Slide 5: Step 2 - Content Selection
+    slide5 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide5.shapes.title.text = "Step 2: Select Content from Existing Presentations"
+    
+    content = slide5.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Build Your Presentation from Existing Content"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    steps = [
+        "Add one or multiple PowerPoint files (.pptx, .ppt)",
+        "Click 'Scan Slides' to analyze all presentations",
+        "View all slides with their titles in a tree view",
+        "Select specific slides you want to include",
+        "Slides are copied with complete formatting:",
+        "  • Text and formatting preserved",
+        "  • Images and pictures included",
+        "  • Tables and charts maintained",
+        "  • Original layout respected"
+    ]
+    
+    for step in steps:
+        p = content.add_paragraph()
+        p.text = step
+        p.level = 0
+        p.font.size = Pt(18)
+    
+    set_slide_background(slide5, RGBColor(240, 248, 255))
+    
+    # Slide 6: Step 3 - Additional Content
+    slide6 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide6.shapes.title.text = "Step 3: Add New Content from Documents"
+    
+    content = slide6.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Intelligent Content Discovery"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    steps = [
+        "Select support documents folder",
+        "Choose content type to search:",
+        "",
+        "TEXT SEARCH:",
+        "  • Search keywords in PDF, DOCX, XLSX files",
+        "  • Extract relevant context around keywords",
+        "  • Create slides with found information",
+        "",
+        "IMAGE SEARCH:",
+        "  • Find images matching topic keywords",
+        "  • Insert multiple images in grid layout",
+        "  • Support PNG, JPG, GIF, BMP formats",
+        "",
+        "CHART DATA SEARCH:",
+        "  • Search Excel files for numerical data",
+        "  • Automatically generate charts",
+        "  • Visualize data in column/bar charts"
+    ]
+    
+    for step in steps:
+        p = content.add_paragraph()
+        p.text = step
+        p.level = 0
+        p.font.size = Pt(16)
+    
+    set_slide_background(slide6, RGBColor(240, 248, 255))
+    
+    # Slide 7: Step 4 - Generation
+    slide7 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide7.shapes.title.text = "Step 4: Generate & Review"
+    
+    content = slide7.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Final Presentation Creation"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    steps = [
+        "Set output filename (auto-generated with timestamp)",
+        "Choose output directory",
+        "Enable automatic slide numbering (optional)",
+        "Click 'Generate Presentation'",
+        "",
+        "The tool will:",
+        "  • Create title slide with your branding",
+        "  • Copy all selected slides safely",
+        "  • Add new content slides",
+        "  • Insert ending slide",
+        "  • Apply slide numbering",
+        "  • Save the final presentation",
+        "",
+        "View generation summary with statistics"
+    ]
+    
+    for step in steps:
+        p = content.add_paragraph()
+        p.text = step
+        p.level = 0
+        p.font.size = Pt(18)
+    
+    set_slide_background(slide7, RGBColor(240, 248, 255))
+    
+    # Slide 8: Technical Architecture
+    slide8 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide8.shapes.title.text = "Technical Architecture"
+    
+    content = slide8.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Built with Modern Python Technologies"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    tech = [
+        ("Core Framework:", "Python 3.x with Tkinter GUI"),
+        ("PowerPoint Processing:", "python-pptx library"),
+        ("Document Readers:", "PyPDF2, python-docx, openpyxl"),
+        ("Image Processing:", "Pillow (PIL)"),
+        ("Architecture:", "Object-Oriented with MVC pattern"),
+        ("Copy Method:", "Safe shape-by-shape duplication"),
+        ("Error Handling:", "Comprehensive try-catch blocks"),
+        ("Logging:", "Detailed console output for debugging")
+    ]
+    
+    for label, desc in tech:
+        p = content.add_paragraph()
+        p.text = f"{label} {desc}"
+        p.level = 0
+        p.font.size = Pt(18)
+        
+        # Make label bold
+        if p.runs:
+            p.runs[0].font.bold = True
+    
+    set_slide_background(slide8, RGBColor(240, 248, 255))
+    
+    # Slide 9: Benefits
+    slide9 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide9.shapes.title.text = "Benefits & Use Cases"
+    
+    content = slide9.placeholders[1].text_frame
+    content.clear()
+    
+    benefits = [
+        ("Time Savings", [
+            "Automate repetitive presentation tasks",
+            "Reduce manual copying and formatting",
+            "Quick content reuse across presentations"
+        ]),
+        ("Consistency", [
+            "Maintain brand guidelines",
+            "Standardized slide formats",
+            "Uniform document structure"
+        ]),
+        ("Flexibility", [
+            "Mix content from multiple sources",
+            "Dynamic content generation",
+            "Customizable for each customer"
+        ]),
+        ("Quality", [
+            "Preserve original formatting",
+            "No corruption or data loss",
+            "Professional output every time"
+        ])
+    ]
+    
+    for benefit, points in benefits:
+        p = content.add_paragraph()
+        p.text = benefit
+        p.level = 0
+        p.font.bold = True
+        p.font.size = Pt(20)
+        p.font.color.rgb = RGBColor(0, 102, 204)
+        
+        for point in points:
+            p = content.add_paragraph()
+            p.text = point
+            p.level = 1
+            p.font.size = Pt(16)
+    
+    set_slide_background(slide9, RGBColor(240, 248, 255))
+    
+    # Slide 10: Installation & Setup
+    slide10 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide10.shapes.title.text = "Installation & Setup"
+    
+    content = slide10.placeholders[1].text_frame
+    content.clear()
+    
+    p = content.add_paragraph()
+    p.text = "Quick Start Guide"
+    p.font.bold = True
+    p.font.size = Pt(20)
+    p.font.color.rgb = RGBColor(0, 102, 204)
+    
+    steps = [
+        "1. Install Python 3.7 or higher",
+        "",
+        "2. Install required libraries:",
+        "   pip install python-pptx",
+        "   pip install PyPDF2",
+        "   pip install python-docx",
+        "   pip install openpyxl",
+        "   pip install pillow",
+        "   pip install pdf2image",
+        "",
+        "3. Run the application:",
+        "   python ppt_automation_tool.py",
+        "",
+        "4. The GUI window will open automatically",
+        "",
+        "5. Start creating presentations!"
+    ]
+    
+    for step in steps:
+        p = content.add_paragraph()
+        p.text = step
+        p.level = 0
+        p.font.size = Pt(18)
+        if step.startswith("   "):
+            p.font.name = "Courier New"
+    
+    set_slide_background(slide10, RGBColor(240, 248, 255))
+    
+    # Slide 11: Tips & Best Practices
+    slide11 = prs.slides.add_slide(prs.slide_layouts[1])
+    slide11.shapes.title.text = "Tips & Best Practices"
+    
+    content = slide11.placeholders[1].text_frame
+    content.clear()
+    
+    tips = [
+        "✓ Organize source presentations in a dedicated folder",
+        "✓ Use descriptive filenames for easy identification",
+        "✓ Keep support documents well-structured",
+        "✓ Name images with relevant keywords for easy search",
+        "✓ Test with a small presentation first",
+        "✓ Check console output for detailed logging",
+        "✓ Preview content before generating final presentation",
+        "✓ Use high-resolution logos (PNG format recommended)",
+        "✓ Keep Excel files clean with clear headers",
+        "✓ Run from command line to see debug information"
+    ]
+    
+    for tip in tips:
+        p = content.add_paragraph()
+        p.text = tip
+        p.level = 0
+        p.font.size = Pt(18)
+    
+    set_slide_background(slide11, RGBColor(240, 248, 255))
+    
+    # Slide 12: Thank You
+    slide12 = prs.slides.add_slide(prs.slide_layouts[6])
+    set_slide_background(slide12, RGBColor(240, 248, 255))
+    
+    left = Inches(1)
+    top = Inches(2.5)
+    width = Inches(8)
+    height = Inches(2)
+    
+    txBox = slide12.shapes.add_textbox(left, top, width, height)
+    tf = txBox.text_frame
+    
+    p = tf.add_paragraph()
+    p.text = "Thank You!"
+    p.font.size = Pt(54)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(0, 51, 102)
+    p.alignment = PP_ALIGN.CENTER
+    
+    p2 = tf.add_paragraph()
+    p2.text = "\nPowerPoint Automation Tool"
+    p2.font.size = Pt(32)
+    p2.font.color.rgb = RGBColor(0, 102, 204)
+    p2.alignment = PP_ALIGN.CENTER
+    
+    p3 = tf.add_paragraph()
+    p3.text = "\nStreamline Your Presentation Workflow"
+    p3.font.size = Pt(24)
+    p3.font.color.rgb = RGBColor(100, 100, 100)
+    p3.alignment = PP_ALIGN.CENTER
+    
+    # Save presentation
+    output_path = Path.home() / "Desktop" / "PowerPoint_Automation_Tool_Demo.pptx"
+    prs.save(str(output_path))
+    print(f"✓ Demo presentation created: {output_path}")
+    return output_path
+
+def set_slide_background(slide, color):
+    """Set slide background color"""
+    background = slide.background
+    fill = background.fill
+    fill.solid()
+    fill.fore_color.rgb = color
+
+def create_readme_file():
+    """Create comprehensive README.md file"""
+    readme_content = """# PowerPoint Automation Tool
+
+## 📋 Overview
+
+The **PowerPoint Automation Tool** is a powerful Python-based application designed to streamline and automate the creation of customized PowerPoint presentations. With an intuitive GUI interface, this tool allows users to combine content from multiple sources, search documents for relevant information, and generate professional presentations in minutes.
+
+## ✨ Key Features
+
+### 1. **Customizable Title & Ending Slides**
+- Add company and customer logos
+- Personalize with author name and date
+- Choose custom background colors
+- Multiple ending slide templates (Thank You, Questions?, Contact Us, Custom Message)
+
+### 2. **Smart Content Selection**
+- Import and scan multiple PowerPoint presentations
+- Preview all available slides with titles
+- Select specific slides to include in the new presentation
+- Preserve original formatting, images, tables, and charts
+
+### 3. **Document Intelligence**
+- **Text Search**: Search keywords in PDF, Word, and Excel files
+- **Image Search**: Find and insert relevant images from folders
+- **Chart Generation**: Extract numerical data from Excel and create charts
+- Context-aware content extraction
+
+### 4. **Safe Slide Copying**
+- Shape-by-shape duplication to prevent XML corruption
+- Maintains all formatting, colors, and styles
+- Supports text, images, tables, and complex layouts
+- No data loss or corruption issues
+
+## 🚀 Installation
+
+### Prerequisites
+- Python 3.7 or higher
+- pip package manager
+
+### Required Libraries
+
+```bash
+pip install python-pptx
+pip install PyPDF2
+pip install python-docx
+pip install openpyxl
+pip install pillow
+pip install pdf2image
+```
+
+### Quick Install (All at once)
+
+```bash
+pip install python-pptx PyPDF2 python-docx openpyxl pillow pdf2image
+```
+
+## 📖 How to Use
+
+### Step 1: Launch the Application
+
+```bash
+python ppt_automation_tool.py
+```
+
+The GUI window will open with a tabbed interface.
+
+### Step 2: Configure Title & End Slides
+
+1. Navigate to **Step 1** tab
+2. Enter your presentation title
+3. Enter author name
+4. Upload company logo (optional)
+5. Upload customer logo (optional)
+6. Choose background color
+7. Select ending slide type
+
+### Step 3: Select Content from Existing Presentations
+
+1. Navigate to **Step 2** tab
+2. Click **"Add Presentation(s)"** to select source PowerPoint files
+3. Click **"Scan Slides"** to analyze all presentations
+4. Review the slide list with titles
+5. Select the slides you want to include (use Ctrl+Click for multiple selections)
+
+### Step 4: Add New Content from Documents
+
+1. Navigate to **Step 3** tab
+2. Click **"Browse"** to select your support documents folder
+3. Choose content type:
+   - **Text**: Search for keywords in documents
+   - **Images**: Find images matching topics
+   - **Chart Data**: Search Excel files for numerical data
+4. Enter a topic/keyword
+5. Click **"Search"** to find relevant content
+6. Review search results
+7. Click **"Add to Presentation"** to include the topic as a new slide
+8. Repeat for multiple topics
+9. Click **"Refresh Preview"** to see all selected content
+
+### Step 5: Generate Your Presentation
+
+1. Navigate to **Step 4** tab
+2. Review or modify the output filename
+3. Choose output directory (default: Desktop)
+4. Enable/disable automatic slide numbering
+5. Click **"Generate Presentation"**
+6. View the generation summary
+7. Your presentation is ready!
+
+## 🏗️ Technical Architecture
+
+### Core Components
+
+- **GUI Framework**: Tkinter with ttk widgets
+- **PowerPoint Processing**: python-pptx library
+- **Document Readers**: PyPDF2, python-docx, openpyxl
+- **Image Processing**: Pillow (PIL)
+
+### Architecture Pattern
+
+- Object-Oriented Design
+- Model-View-Controller (MVC) pattern
+- Event-driven GUI
+- Modular component structure
+
+### Slide Copying Method
+
+The tool uses a **safe shape-by-shape duplication** method:
+1. Creates a temporary intermediate presentation
+2. Copies each shape individually using native APIs
+3. Preserves formatting, images, tables, and text
+4. Avoids XML namespace corruption
+5. Comprehensive error handling and logging
+
+## 🎯 Use Cases
+
+### Business Presentations
+- Create customer-specific presentations from template slides
+- Combine content from multiple product presentations
+- Generate proposal presentations with dynamic content
+
+### Training & Education
+- Compile training materials from various sources
+- Create customized course presentations
+- Combine slides from different modules
+
+### Sales & Marketing
+- Generate personalized sales decks
+- Create pitch presentations with customer logos
+- Assemble case studies and testimonials
+
+### Reporting
+- Create monthly/quarterly reports
+- Combine data visualizations from Excel
+- Generate executive summaries
+
+## 💡 Tips & Best Practices
+
+### Organization
+- ✓ Keep source presentations in a dedicated folder
+- ✓ Use descriptive filenames for easy identification
+- ✓ Organize support documents by category
+
+### Content Preparation
+- ✓ Use high-resolution logos (PNG format recommended)
+- ✓ Name images with relevant keywords for easy search
+- ✓ Keep Excel files clean with clear headers
+- ✓ Ensure PDF documents have selectable text
+
+### Using the Tool
+- ✓ Test with a small presentation first
+- ✓ Preview content before generating final presentation
+- ✓ Run from command line to see debug information
+- ✓ Check console output for detailed logging
+
+### Performance
+- ✓ Close other applications when processing large presentations
+- ✓ Use a limited number of source presentations (5-10 recommended)
+- ✓ Optimize images before adding to presentations
+
+## 🐛 Troubleshooting
+
+### Issue: "No module named 'pptx'"
+**Solution**: Install python-pptx: `pip install python-pptx`
+
+### Issue: Generated presentation needs repair
+**Solution**: The latest version uses safe copying methods. Ensure you're using the updated code.
+
+### Issue: Images not found
+**Solution**: Check that the support documents folder path is correct and images have matching keywords in filenames.
+
+### Issue: Text not copying correctly
+**Solution**: Ensure source presentations are not password-protected or corrupted.
+
+### Issue: Chart data not found
+**Solution**: Make sure Excel files contain numerical data and sheet names match search keywords.
+
+## 🔍 Console Output
+
+Run the application from command line to see detailed logging:
+
+```
+=== Starting Slide Copy Process ===
+Copying slide 1 from presentation.pptx
+  Copying slide with 5 shapes
+    Copying shape 1/5: Type=17
+      ✓ Text copied: 2 paragraph(s)
+    Copying shape 2/5: Type=13
+      ✓ Picture copied
+  ✓ Safely copied 5 shapes
+✓ Slide 1 copied successfully
+```
+
+## 📝 Supported File Formats
+
+### Input
+- PowerPoint: `.pptx`, `.ppt`
+- Documents: `.pdf`, `.docx`
+- Spreadsheets: `.xlsx`, `.xls`
+- Images: `.png`, `.jpg`, `.jpeg`, `.gif`, `.bmp`
+
+### Output
+- PowerPoint: `.pptx`
+
+## 🔐 Limitations
+
+- Charts from source presentations are copied as placeholders (require manual recreation)
+- Password-protected files cannot be read
+- Very large presentations (100+ slides) may take longer to process
+- Embedded videos are not copied
+- Animations and transitions are not preserved
+
+## 🛠️ System Requirements
+
+- **Operating System**: Windows, macOS, or Linux
+- **Python**: 3.7 or higher
+- **RAM**: 4GB minimum (8GB recommended)
+- **Disk Space**: 100MB for application and libraries
+- **Display**: 1200x800 minimum resolution
+
+## 📦 Project Structure
+
+```
+ppt_automation_tool/
+│
+├── ppt_automation_tool.py      # Main application file
+├── README.md                    # This file
+├── requirements.txt             # Python dependencies
+└── examples/                    # Example presentations (optional)
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Areas for improvement:
+- Add support for more chart types
+- Implement animation preservation
+- Add template library
+- Improve search algorithms
+- Add batch processing mode
+
+## 📄 License
+
+This project is provided as-is for educational and commercial use.
+
+## 📞 Support
+
+For issues and questions:
+1. Check the console output for error messages
+2. Review the Troubleshooting section
+3. Ensure all dependencies are installed correctly
+
+## 🎉 Version History
+
+### Version 2.0 (Current)
+- ✓ Added background color selection
+- ✓ Implemented safe slide copying (no corruption)
+- ✓ Added image search functionality
+- ✓ Added chart generation from Excel data
+- ✓ Enhanced text formatting preservation
+- ✓ Improved error handling and logging
+
+### Version 1.0
+- Initial release with basic functionality
+
+## 🌟 Acknowledgments
+
+Built with:
+- python-pptx by Steve Canny
+- Tkinter (Python Standard Library)
+- PyPDF2, python-docx, openpyxl communities
+
+---
+
+**PowerPoint Automation Tool** - Streamline Your Presentation Workflow
+
+Created with ❤️ using Python
+"""
+
+    # Save README file
+    readme_path = Path.home() / "Desktop" / "README.md"
+    with open(readme_path, 'w', encoding='utf-8') as f:
+        f.write(readme_content)
+    
+    print(f"✓ README.md created: {readme_path}")
+    return readme_path
+
+def create_requirements_file():
+    """Create requirements.txt file"""
+    requirements = """python-pptx>=0.6.21
+PyPDF2>=3.0.0
+python-docx>=0.8.11
+openpyxl>=3.0.10
+Pillow>=9.0.0
+pdf2image>=1.16.0
+"""
+    
+    req_path = Path.home() / "Desktop" / "requirements.txt"
+    with open(req_path, 'w') as f:
+        f.write(requirements)
+    
+    print(f"✓ requirements.txt created: {req_path}")
+    return req_path
+
+# Main execution
+if __name__ == "__main__":
+    print("\n" + "="*60)
+    print("PowerPoint Automation Tool - Demo & Documentation Generator")
+    print("="*60 + "\n")
+    
+    print("Generating files...\n")
+    
+    # Create demo presentation
+    ppt_path = create_demo_presentation()
+    
+    # Create README
+    readme_path = create_readme_file()
+    
+    # Create requirements.txt
+    req_path = create_requirements_file()
+    
+    print("\n" + "="*60)
+    print("✓ All files generated successfully!")
+    print("="*60)
+    print(f"\n📊 Demo Presentation: {ppt_path}")
+    print(f"📄 README.md: {readme_path}")
+    print(f"📦 requirements.txt: {req_path}")
+    print("\nFiles saved to your Desktop.")
+    print("\nYou can now:")
+    print("  1. Open the PowerPoint presentation to see the demo")
+    print("  2. Read the README.md for complete documentation")
+    print("  3. Use requirements.txt for easy installation")
+    print("\n" + "="*60 + "\n")
